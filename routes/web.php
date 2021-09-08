@@ -24,18 +24,22 @@ Route::get('/', function (){
     return view('home');
 })->name('home');
 
-Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+Route::post('/logout', [LogoutController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
+    ->name('dashboard')
+    ->middleware('auth');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
 
 Route::get('/create', [PostController::class, 'create'])
-    ->name('create');
+    ->name('create')
+    ->middleware('auth');
 Route::post('/create', [PostController::class, 'store']);
 
 Route::get('/posts', [PostController::class, 'posts'])
@@ -87,9 +91,23 @@ Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 've
 //-------------------------------------------------------------------------
 
 
-Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])
+    ->name('posts.destroy')
+    ->middleware('auth');
 
 Route::get('/posts/{id}', [PostController::class, 'show']);
-Route::post('/posts/{post}/likes', [PostLikeController::class, 'store'])->name('posts.likes');
-Route::delete('/posts/{post}/likes', [PostLikeController::class, 'destroy'])->name('posts.likes');
-Route::get('/users/{user:username}/posts', [UserPostController::class, 'index'])->name('users.posts');
+Route::post('/posts/{post}/likes', [PostLikeController::class, 'store'])
+    ->name('posts.likes')
+    ->middleware('auth');
+Route::delete('/posts/{post}/likes', [PostLikeController::class, 'destroy'])
+    ->name('posts.likes')
+    ->middleware('auth');
+Route::get('/users/{user:username}/posts', [UserPostController::class, 'index'])
+    ->name('users.posts')
+    ->middleware('auth');
+
+
+
+
+
+
